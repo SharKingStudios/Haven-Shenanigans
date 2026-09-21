@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://cnnp16454ee3v"]
+
+[ext_resource type="Script" uid="uid://b8vwvc3kpodri" path="res://game.gd" id="1"]
+[ext_resource type="Script" uid="uid://durx16he8njsr" path="res://sound_controller.gd" id="2"]
+
+[node name="SlimeEscape" type="Node2D"]
+script = ExtResource("1")
+
+[node name="SoundController" type="Node" parent="."]
+script = ExtResource("2")

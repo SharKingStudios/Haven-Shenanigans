@@ -1,0 +1,83 @@
+[gd_scene load_steps=10 format=3 uid="uid://cnnp16454ee3v"]
+
+[ext_resource type="Script" uid="uid://b8vwvc3kpodri" path="res://game.gd" id="1"]
+[ext_resource type="Script" uid="uid://durx16he8njsr" path="res://sound_controller.gd" id="2"]
+[ext_resource type="Texture2D" uid="uid://bieckyt7yb8uv" path="res://grac was here.png" id="3_grac"]
+[ext_resource type="Script" uid="uid://b01gvx13gicdr" path="res://player.gd" id="4_player"]
+[ext_resource type="Script" uid="uid://c3k00nwgaou5l" path="res://slime.gd" id="5_slime"]
+[ext_resource type="Script" uid="uid://cfetnhqi845dq" path="res://floor_tiles.gd" id="6_floor_tiles"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_player"]
+radius = 17.0
+height = 34.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_slime"]
+size = Vector2(280, 1000)
+
+[sub_resource type="Curve" id="Curve_feb5d"]
+_data = [Vector2(0, 0), 0.0, 7.36459, 0, 0, Vector2(0.238636, 0.303371), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[node name="SlimeEscape" type="Node2D"]
+script = ExtResource("1")
+
+[node name="SoundController" type="Node" parent="."]
+script = ExtResource("2")
+
+[node name="FloorTiles" type="TileMapLayer" parent="."]
+z_index = -10
+script = ExtResource("6_floor_tiles")
+
+[node name="Player" type="CharacterBody2D" parent="." groups=["runner"]]
+position = Vector2(70, 450)
+script = ExtResource("4_player")
+
+[node name="PlayerSprite" type="Sprite2D" parent="Player"]
+scale = Vector2(0.075, 0.075)
+texture = ExtResource("3_grac")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+shape = SubResource("CapsuleShape2D_player")
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+zoom = Vector2(2, 2)
+position_smoothing_enabled = true
+position_smoothing_speed = 7.0
+
+[node name="Slime" type="Node2D" parent="."]
+script = ExtResource("5_slime")
+
+[node name="CatchArea" type="Area2D" parent="Slime"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Slime/CatchArea"]
+position = Vector2(-40, 350)
+shape = SubResource("RectangleShape2D_slime")
+
+[node name="MistParticles" type="CPUParticles2D" parent="Slime"]
+visible = false
+position = Vector2(-30, 390)
+amount = 50
+lifetime = 1.3
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 35.0
+initial_velocity_max = 125.0
+scale_amount_min = 2.0
+scale_amount_max = 5.0
+color = Color(0.45, 1, 0.62, 0.75)
+
+[node name="GoalGracParticles" type="CPUParticles2D" parent="."]
+position = Vector2(5523, 356)
+amount = 100
+texture = ExtResource("3_grac")
+lifetime = 1.15
+emission_shape = 1
+emission_sphere_radius = 119.65
+gravity = Vector2(0, 2)
+angular_velocity_min = -1.0
+angular_velocity_max = 1.0
+angle_min = -720.0
+angle_max = 720.0
+scale_amount_min = 0.15
+scale_amount_max = 0.25
+scale_amount_curve = SubResource("Curve_feb5d")
